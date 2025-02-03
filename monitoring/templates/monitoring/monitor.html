@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Hosts</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00ADB5;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #1E1E1E;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #00ADB5;
+            color: #FFFFFF;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        tr:nth-child(even) {
+            background-color: #2A2A2A;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #1E1E1E;
+        }
+
+        td span {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        td span.online {
+            background-color: #388E3C;
+            color: #FFFFFF;
+        }
+
+        td span.offline {
+            background-color: #D32F2F;
+            color: #FFFFFF;
+        }
+
+        td span.running {
+            background-color: #0288D1;
+            color: #FFFFFF;
+        }
+
+        td span.stopped {
+            background-color: #FF5722;
+            color: #FFFFFF;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableBody = document.querySelector('tbody');
+
+            function updateTable(data) {
+                tableBody.innerHTML = ''; // Limpa a tabela antes de preencher novamente
+
+                for (const [host, details] of Object.entries(data.results)) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${host}</td>
+                        <td>${details.company}</td>
+                        <td>${details.os}</td>
+                        <td>
+                            <span class="${details.ping_status === 'Online' ? 'online' : 'offline'}">
+                                ${details.ping_status}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="${details.service_status === 'Rodando' ? 'running' : 'stopped'}">
+                                ${details.service_status}
+                            </span>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            }
+
+            function fetchData() {
+                fetch('/monitor/data/')
+                    .then(response => response.json())
+                    .then(data => updateTable(data))
+                    .catch(error => console.error('Erro ao obter dados:', error));
+            }
+
+            // Atualiza a tabela a cada 5 segundos
+            setInterval(fetchData, 5000);
+
+            // Carrega os dados inicialmente
+            fetchData();
+        });
+    </script>
+</head>
+<body>
+    <h1>Monitoramento de Hosts</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Host</th>
+                <th>Empresa</th>
+                <th>Sistema Operacional</th>
+                <th>Status da Máquina</th>
+                <th>Status do Serviço</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados serão populados dinamicamente via JavaScript -->
+        </tbody>
+    </table>
+</body>
+</html>
