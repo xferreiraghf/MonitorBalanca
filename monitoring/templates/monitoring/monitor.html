@@ -89,7 +89,7 @@
             const tableBody = document.querySelector('tbody');
 
             function updateTable(data) {
-                tableBody.innerHTML = ''; // Limpa a tabela antes de preencher novamente
+                tableBody.innerHTML = ''; 
 
                 for (const [host, details] of Object.entries(data.results)) {
                     const row = document.createElement('tr');
@@ -122,7 +122,6 @@
             // Atualiza a tabela a cada 5 segundos
             setInterval(fetchData, 5000);
 
-            // Carrega os dados inicialmente
             fetchData();
         });
     </script>
@@ -140,7 +139,6 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Dados serão populados dinamicamente via JavaScript -->
         </tbody>
     </table>
 </body>
