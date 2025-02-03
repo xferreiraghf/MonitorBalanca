@@ -2,6 +2,8 @@
 
 Este projeto é uma aplicação Django que monitora o status de máquinas e serviços específicos. Ele verifica se as máquinas estão ativas e se um serviço específico (uma aplicação de balança que roda na porta 5000) está em execução.
 
+![image](https://github.com/user-attachments/assets/a529eb9d-41b1-4283-a541-b645ca98b5f2)
+
 ---
 
 ## Estrutura do Projeto
